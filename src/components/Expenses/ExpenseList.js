@@ -5,22 +5,26 @@ import "./ExpenseList.css";
 import { useState } from "react";
 
 const ExpenseList = (props) => {
-  const [filteredYear, setFilteredYear] = useState("2020");
-
-  const expensesList = props.expenses.map((item) => {
-    return (
-      <ExpenseItem
-        title={item.title}
-        amount={item.amount}
-        date={item.date}
-        key={(Math.random() + 1).toString(36).substring(7)}
-      />
-    );
-  });
+  const [filteredYear, setFilteredYear] = useState(
+    new Date().getFullYear().toString()
+  );
   const filterChangedHandler = (selectedYear) => {
-    console.log("in ExpenseList.js");
     setFilteredYear(selectedYear);
   };
+
+  const expensesList = props.expenses
+    .filter((item) => item.date.getFullYear().toString() === filteredYear)
+    .map((item) => {
+      return (
+        <ExpenseItem
+          title={item.title}
+          amount={item.amount}
+          date={item.date}
+          key={item.id}
+        />
+      );
+    });
+
   return (
     <Card className={"expenses"}>
       <ExpensesFilter
